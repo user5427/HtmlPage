@@ -1,21 +1,6 @@
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
+#include "html_modulis.h"
 
 //--------- HtmlElement FUNCTIONS ----------------------
-
-typedef struct HtmlElement{
-  char* _elementType;
-  char* text;
-
-  struct HtmlElement** _children;
-  unsigned int _childrenCount;
-  unsigned int _childrenSize;
-  
-  //CLASS, ID dar prideti reikes
-
-} HtmlElement;
-
 //FUNKCIJA GRAZINA ADRESA JEIGU VISKAS SEKMINGAI PAVYKO, KITU ATVEJU GRAZINA NULL
 HtmlElement* initHtmlElement(char* elementType) {
   HtmlElement* htmlElement = malloc(sizeof(HtmlElement));
@@ -23,12 +8,12 @@ HtmlElement* initHtmlElement(char* elementType) {
   if (htmlElement == NULL || elementType == NULL) {
     return NULL;
   }
-  
+  // Initialize all variables with default values
   htmlElement->_elementType = elementType;
   htmlElement->text = NULL;
   htmlElement->_childrenCount = 0;
   htmlElement->_childrenSize = 2;
-
+  // Initialize the pointer array to other HtmlElements
   htmlElement->_children =
       malloc(sizeof(HtmlElement*) * htmlElement->_childrenSize);
 
@@ -79,14 +64,7 @@ void freeHtmlElement(HtmlElement* htmlElement) {
 
 //--------- HtmlPage FUNCTIONS ----------------------
 
-typedef struct {
-  FILE *_htmlFile;
-  //CSS FILE prideti
- 
-  HtmlElement* _htmlHead;
-  HtmlElement* _htmlBody;
-  
-} HtmlPage;
+
 
 
 //FUNKCIJA GRAZINA ADRESA JEIGU VISKAS SEKMINGAI PAVYKO, KITU ATVEJU GRAZINA NULL
@@ -202,44 +180,4 @@ void createHtmlPage(HtmlPage* htmlPage) {
 
   //TODO: GAL FREE PALIKTI NAUDOTOJUI PACIAM NAUDOTI?
   freeHtmlPage(htmlPage);
-}
-
-//--------- HtmlPage FUNCTIONS ----------------------
-
-int main() {
-  HtmlPage *htmlPage = initHtmlPage("failas.html");
-
-  HtmlElement *div = initHtmlElement("div");
-  
-  HtmlElement *p = initHtmlElement("p");
-  HtmlElement *p2 = initHtmlElement("p");
-  HtmlElement *p3 = initHtmlElement("p");
-  HtmlElement *p4 = initHtmlElement("p");
-  
-
-  if (htmlPage == NULL) {
-    printf("HTML PAGE NULLIS\n");
-    return 1;
-  }
-  
-  if (p == NULL) {
-    printf("Ivyko klaida\n");
-    return 1;
-  }
-
-  p->text = "Hello World!";
-  p2->text = "123123";
-  p3->text = "asdasd";
-  p4->text = "wadasdaw";
-
-  addChild(div, p);
-  addChild(div, p2);
-  addChild(div, p3);
-  addChild(div, p4);
-
-  addBodyElement(htmlPage, div);
-  
-  createHtmlPage(htmlPage);
-  
-  return 0;
 }
