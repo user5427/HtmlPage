@@ -86,5 +86,16 @@ Sukuria \textit{head} ir \textit{body} html elementus, kuriuos priskiria htmlPag
 \draw[arrow] (fun3.east)--(htel.west);
 \end{tikzpicture}
 
+\section{Programos problemos}
+\textbf{Problemiški html atvejai:}
+\begin{enumerate}
+ \item{
+    \label{pirmas_} 
+    \verb|<p>See more <a target="_blank" href="https://|\
+    \\verb|freecatphotoapp.com">cat photos</a> in our gallery.</p>|} 
+ 
+\end{enumerate}
+\textbf{Problemos paaiškinimas:}
+\\\ref{pirmas_}. Elemento tekstas negali apsupti kitą elementą iš dviejų pusių. Elemento tekstas visada eis pirmas ir tik po to kitas gilesnis elementas.
 
 \end{document}

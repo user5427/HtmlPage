@@ -2,7 +2,7 @@
 #include "stdio.h"
 //--------- HtmlPage FUNCTIONS examples/tests ----------------------
 int main() {
-    // Write tests here
+    // example
     HtmlPage *htmlPage = initHtmlPage("failas.html");
 
     HtmlElement *div = initHtmlElement("div");
@@ -35,6 +35,26 @@ int main() {
 
     addBodyElement(htmlPage, div);
 
+    createHtmlPage(htmlPage);
+
+    /* ----------- Tests ----------- */
+    HtmlPage *htmlTest = initHtmlPage("tests.html");
+    HtmlElement *main = initHtmlElement("main");
+    HtmlElement *h1 = initHtmlElement("h1");
+    h1->text = "CatPhotoApp";
+    HtmlElement *section = initHtmlElement("section");
+    HtmlElement *h2 = initHtmlElement("h2");
+    h2->text = "Cat Photos";
+    for (int i = 0; i < 10; ++i) {
+        addChild(section, h2);
+    }
+    addChild(h1, section);
+    addChild(main, h1);
+    addBodyElement(htmlTest, main);
+    createHtmlPage(htmlTest);
+    freeHtmlPage(htmlTest); //FIXME
+    createHtmlPage(htmlTest);
+    freeHtmlPage(htmlPage); //FIXME
     createHtmlPage(htmlPage);
 
     return 0;
