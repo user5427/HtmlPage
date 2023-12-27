@@ -37,7 +37,7 @@ int main() {
 
     createHtmlPage(htmlPage);
 
-    /* ----------- Tests ----------- */
+    /* ----------- Tests 1 ----------- */
     HtmlPage *htmlTest = initHtmlPage("tests.html");
     HtmlElement *main = initHtmlElement("main");
     HtmlElement *h1 = initHtmlElement("h1");
@@ -57,5 +57,15 @@ int main() {
     freeHtmlPage(htmlPage); //FIXME
     createHtmlPage(htmlPage);
 
+    /* ----------- Tests 2 ----------- */
+    HtmlPage *htmlTest2 = initHtmlPage("tests2.html");
+    HtmlElement *p2_1 = initHtmlElement("h1");
+    HtmlElement *a = initHtmlElement("a");
+    a->text = "cat photos";
+    p2_1->text = "CatPhotoApp";
+    addChild(p2_1, a);
+    //addChild(a, p2_1); //FIXME infinite loop?
+    addBodyElement(htmlTest2, p2_1);
+    createHtmlPage(htmlTest2);
     return 0;
 }
