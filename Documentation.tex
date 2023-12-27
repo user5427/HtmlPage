@@ -1,0 +1,32 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{luainputenc}
+\usepackage[lithuanian]{babel}
+
+%opening
+\title{Dokumentacija}
+\author{}
+\date{2023-12-27}
+
+\begin{document}
+
+\maketitle
+
+\section*{initHtmlElement()}
+\textbf{Pilnas aprašas:} \textit{HtmlElement* initHtmlElement(char* elementType)}
+\\\textbf{Funkcijos apibudinimas:}
+\\Sukuria html elementą, kurio tipas yra nurodomas pagal char rodyklę elementType. 
+Nustato visas html elemento kintamųjų reikšmes. Inicializuoja html elemento rodyklių 
+masyvą į kitus gilesnius html elementus. Grąžina rodyklę į pagrindinį html elementą.
+
+\section*{addChild()}
+\textbf{Pilnas aprašas:} \textit{HtmlElement* addChild(HtmlElement* parent, HtmlElement* child)}
+\\\textbf{Funkcijos apibudinimas:}
+\\Funkcija nurodytam pagrindiniui html elementui priskiria šalutinį html elementą. Jeigu pagrindinio html elemento rodyklių masyvas
+yra per mažas, kad būtų galima pridėti dar vieną rodyklę į šalutinį html elementą, masyvas yra padidinamas du kartus. Pridejus dar vieną
+rodyklę į šalutinį elementą, pagrindinio html elemento rodklių skaitliukas padidinamas vienetu.
+
+\section*{freeHtmlElement()}
+
+
+
+\end{document}
