@@ -151,12 +151,11 @@ void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sho
 }
 
 void freeHtmlPage(HtmlPage* htmlPage) {
-  if (htmlPage == NULL) {
-    return;
+  if (htmlPage != NULL) {
+      freeHtmlElement(htmlPage->_htmlHead);
+      freeHtmlElement(htmlPage->_htmlBody);
+      free(htmlPage); // new code line
   }
-
-  freeHtmlElement(htmlPage->_htmlHead);
-  freeHtmlElement(htmlPage->_htmlBody);
 }
 
 void createHtmlPage(HtmlPage* htmlPage) {

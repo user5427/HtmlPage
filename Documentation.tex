@@ -1,6 +1,7 @@
 \documentclass[a4paper,10pt]{article}
 \usepackage[utf8]{luainputenc}
 \usepackage[lithuanian]{babel}
+\usepackage{tikz}
 
 %opening
 \title{Dokumentacija}
@@ -11,22 +12,79 @@
 
 \maketitle
 
-\section*{initHtmlElement()}
+\section{Funkcijos}
+\subsection{initHtmlElement()}
+\label{initHtmlElement}
 \textbf{Pilnas aprašas:} \textit{HtmlElement* initHtmlElement(char* elementType)}
 \\\textbf{Funkcijos apibudinimas:}
 \\Sukuria html elementą, kurio tipas yra nurodomas pagal char rodyklę elementType. 
 Nustato visas html elemento kintamųjų reikšmes. Inicializuoja html elemento rodyklių 
 masyvą į kitus gilesnius html elementus. Grąžina rodyklę į pagrindinį html elementą.
 
-\section*{addChild()}
+\subsection{addChild()}
+\label{addChild}
 \textbf{Pilnas aprašas:} \textit{HtmlElement* addChild(HtmlElement* parent, HtmlElement* child)}
 \\\textbf{Funkcijos apibudinimas:}
 \\Funkcija nurodytam pagrindiniui html elementui priskiria šalutinį html elementą. Jeigu pagrindinio html elemento rodyklių masyvas
 yra per mažas, kad būtų galima pridėti dar vieną rodyklę į šalutinį html elementą, masyvas yra padidinamas du kartus. Pridejus dar vieną
 rodyklę į šalutinį elementą, pagrindinio html elemento rodklių skaitliukas padidinamas vienetu.
 
-\section*{freeHtmlElement()}
+\subsection{freeHtmlElement()}
+\label{freeHtmlElement}
+\textbf{Pilnas aprašas:} \textit{void freeHtmlElement(HtmlElement* htmlElement)}
+\\\textbf{Funkcijos apibudinimas:}
+\\Funkcija atlaisvina visas rodykles į gilesnius html elementus. Funkcija atlaisvina nurodyto elemento rodyklę.
 
+\subsection{initHtmlPage}
+
+\textbf{Pilnas aprašas:} \textit{HtmlPage* initHtmlPage(char* fileName)}
+\\\textbf{Funkcijos apibudinimas:}
+\\Funkcija inicializuoja html puslapį, sukuria .html failą pagal char rodyklę fileName. Išsaugo failo adresą htmlPage elemente.
+Sukuria \textit{head} ir \textit{body} html elementus, kuriuos priskiria htmlPage elementui. Grąžina htmlPage elemento rodyklę.
+
+
+\subsection{addBodyElement}
+\textbf{Pilnas aprašas:} \textit{HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement* htmlElement)}
+\\\textbf{Funkcijos apibudinimas:}
+\\Prie html puslapio prideda html elementą.
+\\htmlElement \rightarrow{} htmlBody \rightarrow{} htmlPage
+\\Jei įvyksta klaida, funkcija grąžina NULL reikšmę. Kitu atveju rodyklę į htmlElement.
+
+\subsection*{writeHtmlElement}
+\textbf{Pilnas aprašas:} \textit{void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned short depth)}
+\\\textbf{Funkcijos apibudinimas:}
+\\Išsaugoja nurodytą html elementą ir visus gilesnius html elementus einančios po jo. Išsaugojimo vieta - htmlPage elemente nurodytas failo adresas.
+
+\subsection{void freeHtmlPage(HtmlPage* htmlPage)}
+\textbf{Pilnas aprašas:} \textit{void freeHtmlPage(HtmlPage* htmlPage)}
+\\\textbf{Funkcijos apibudinimas:}
+\\Atlaisvina visus html elementus ir html puslapio rodyklę.
+
+\subsection{createHtmlPage}
+\textbf{Pilnas aprašas:} \textit{void freeHtmlPage(HtmlPage* htmlPage)}
+\\\textbf{Funkcijos apibudinimas:}
+\begin{itemize}
+\item Prideda \textit{"<!DOCTYPE html>}\verb|\|\textit{n"} html failo pradžioje. 
+\item Sukuria html head.
+\item Sukuria html body (surašo visus html elementus).
+\item Atlaisvina html puslapio elementą.
+\end{itemize}
+
+
+
+\section{Programos vizualizacija}
+\tikzstyle{RectObject}=[rectangle,fill=white,draw,line width=0.5mm]
+\tikzstyle{line}=[draw]
+\tikzstyle{arrow}=[draw, -latex] 
+\begin{tikzpicture}
+\draw(-5, 1) node[RectObject] (fun1) {initHtmlElement()};
+\draw(-5, 0) node[RectObject] (fun2) {addChild()};
+\draw(-5, -1) node[RectObject] (fun3) {freeHtmlElement()};
+\draw (0, 0) node[RectObject] (htel) {html elementai};
+\draw[arrow] (fun1.east)--(htel.west);
+\draw[arrow] (fun2.east)--(htel.west);
+\draw[arrow] (fun3.east)--(htel.west);
+\end{tikzpicture}
 
 
 \end{document}
