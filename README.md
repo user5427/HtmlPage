@@ -57,20 +57,24 @@ Gautas sugeneruotas html failas atrodo taip:
 
 ## HtmlPage
 
-### ` HtmlPage* initHtmlPage(char* fileName); `
+```c
+HtmlPage* initHtmlPage(char* fileName);
+```
 Sukuria `HtmlPage` struktūrą. 
-#### Argumentai
+### Argumentai
 `fileName` - kuriamo html failo pavadinimas. 
-#### Gražina
+### Gražina
 Adresą į sukurtą `HtmlPage` arba `NULL` jeigu nepavyko sukurti.
 
-### `HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement);`
+```c
+HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement);
+```
 Prideda `htmlElement` prie html `<body>` elementų.
 
-#### Argumentai
+### Argumentai
 `htmlPage` - prie šios struktūros bus pridėtas `htmlElement` \
 `htmlElement` - pridedamas elementas. 
-#### Gražina
+### Gražina
 Adresą į pridėtą `HtmlElement` arba NULL jeigu nepavyko pridėti.
 ## HtmlElement
 
