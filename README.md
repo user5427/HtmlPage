@@ -1,8 +1,15 @@
 # HtmlPage
 ## Turinys
-[Turinys](https://github.com/user5427/ProProPro-modulis/edit/readme-dokumentacija/README.md#turinys)  
-[Aprašymas](https://github.com/user5427/ProProPro-modulis/edit/readme-dokumentacija/README.md#apra%C5%A1ymas)  
-[Dokumentacija]()
+[Turinys](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#turinys)  
+[Aprašymas](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija/README.md#apra%C5%A1ymas)  
+[Dokumentacija](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija#dokumentacija)
+- [HtmlPage](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlpage-1)
+  - [initHtmlPage()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlpage-inithtmlpagechar-filename)
+  - [addBodyElement()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlelement-addbodyelementhtmlpage-htmlpage-htmlelement-htmlelement)
+  - [createHtmlPage()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#void-createhtmlpagehtmlpage-htmlpage)
+- [HtmlElement](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlelement)
+  - [initHtmlElement()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlelement-inithtmlelementchar-elementtype)
+  - [addChild()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlelement-addchildhtmlelement-parent-htmlelement-child) 
 ## Aprašymas
 **HtmlPage** modulis generuoja html failus, pagal sukurtus elementus. 
 Modulio naudojimo pavyzdys: 
