@@ -15,8 +15,8 @@ HtmlElement* initHtmlElement(char* elementType) {
   htmlElement->_childrenSize = 2;
   // Initialize the pointer array to other HtmlElements
   htmlElement->_children =
-      malloc(sizeof(HtmlElement*) * htmlElement->_childrenSize);
-
+      malloc(sizeof(HtmlElement**) * htmlElement->_childrenSize);
+  
   if (htmlElement->_children == NULL) {
     return NULL;
   }
@@ -24,7 +24,7 @@ HtmlElement* initHtmlElement(char* elementType) {
   return htmlElement;
 }
 
-HtmlElement* addChild(HtmlElement* parent, HtmlElement* child) {
+HtmlElement* addChild(HtmlElement* parent, HtmlElement** child) {
   if (parent == NULL || child == NULL) {
     return NULL;
   }
@@ -32,7 +32,7 @@ HtmlElement* addChild(HtmlElement* parent, HtmlElement* child) {
   //JEIGU UZPILDYTAS MASYVAS, REALOKUOJAMA DAR VIETOS (NAUJOS_DYDIS = PRAEITOS_DYDIS * 2)
   if (parent->_childrenCount >= parent->_childrenSize) {
     parent->_childrenSize *= 2;
-    parent->_children = realloc(parent->_children, sizeof(HtmlElement*) * parent->_childrenSize);
+    parent->_children = realloc(parent->_children, sizeof(HtmlElement**) * parent->_childrenSize);
 
     //JEIGU IVYKO KLAIDA
     if (parent->_children == NULL) {
@@ -41,23 +41,32 @@ HtmlElement* addChild(HtmlElement* parent, HtmlElement* child) {
       parent->_childrenSize /= 2;
       return NULL;
     }
-  }
-
+  }  
+  
   // GALIMA DABAR PRIDETI NAUJA ELEMENTA
   *(parent->_children + parent->_childrenCount) = child;
   parent->_childrenCount += 1;
 
-  return child;
+  return *child;
 }
 
-void freeHtmlElement(HtmlElement* htmlElement) {
-  for (int i = 0; i < htmlElement->_childrenCount; i++) {
-    HtmlElement* child = *(htmlElement->_children + i);
+void freeHtmlElement(HtmlElement **htmlElement) {
+  if (*htmlElement == NULL) {
+    return;
+  }
+  
+  for (int i = 0; i < (*htmlElement)->_childrenCount; i++) {
+    HtmlElement** child = *((*htmlElement)->_children + i);
     
     freeHtmlElement(child);
   }
 
-  free(htmlElement);
+  if (htmlElement == NULL) {
+    return;
+  }
+  
+  free(*htmlElement);
+  *htmlElement = NULL;
 }
 
 //--------- HtmlElement FUNCTIONS ----------------------
@@ -104,17 +113,17 @@ HtmlPage* initHtmlPage(char* fileName) {
   return htmlPage;
 }
 
-HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement* htmlElement) {
+HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement) {
   if (htmlPage == NULL || htmlElement == NULL) {
     return NULL;
   }
-
+  
   // Prideda nauja elementa i body
   if (addChild(htmlPage->_htmlBody, htmlElement) == NULL) {
     return NULL;
   }
 
-  return htmlElement;
+  return *htmlElement;
 }
 
 void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned short depth) {
@@ -137,9 +146,9 @@ void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sho
   
   // elemento 'children' atspausdinimas
   for (int i = 0; i < htmlElement->_childrenCount; i++) {
-    HtmlElement* child = *(htmlElement->_children + i);
+    HtmlElement** child = *(htmlElement->_children + i);
     
-    writeHtmlElement(htmlPage, child, depth+1);
+    writeHtmlElement(htmlPage, *child, depth+1);
   }
 
   // tarpu pridejimas
@@ -150,32 +159,35 @@ void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sho
   fprintf(htmlFile, "</%s>\n", htmlElement->_elementType);
 }
 
-void freeHtmlPage(HtmlPage* htmlPage) {
+void freeHtmlPage(HtmlPage** htmlPage) {
   if (htmlPage != NULL) {
-      freeHtmlElement(htmlPage->_htmlHead);
-      freeHtmlElement(htmlPage->_htmlBody);
-      free(htmlPage); // new code line
+      freeHtmlElement(&(*htmlPage)->_htmlHead);
+      freeHtmlElement(&(*htmlPage)->_htmlBody);
+
+      // pafreeinimas ir pats HtmlPage galiausiai
+      free(*htmlPage); 
+      *htmlPage = NULL;
   }
 }
 
-void createHtmlPage(HtmlPage* htmlPage) {
-  if (htmlPage == NULL) {
+void createHtmlPage(HtmlPage** htmlPage) {
+  if (*htmlPage == NULL) {
     return;
   }
   
-  FILE *htmlFile = htmlPage->_htmlFile;
+  FILE *htmlFile = (*htmlPage)->_htmlFile;
 
   fprintf(htmlFile, "<!DOCTYPE html>\n");
 
-  HtmlElement* htmlHead = htmlPage->_htmlHead;
+  HtmlElement* htmlHead = (*htmlPage)->_htmlHead;
 
   // sukuria i html visa head
-  writeHtmlElement(htmlPage, htmlHead, 0);
+  writeHtmlElement(*htmlPage, htmlHead, 0);
   
-  HtmlElement *htmlBody = htmlPage->_htmlBody;
+  HtmlElement *htmlBody = (*htmlPage)->_htmlBody;
   
   // sukuria i html visa body
-  writeHtmlElement(htmlPage, htmlBody, 0);
+  writeHtmlElement(*htmlPage, htmlBody, 0);
 
   //TODO: GAL FREE PALIKTI NAUDOTOJUI PACIAM NAUDOTI?
   freeHtmlPage(htmlPage);
