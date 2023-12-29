@@ -50,7 +50,7 @@ HtmlElement* addChild(HtmlElement* parent, HtmlElement** child) {
   return *child;
 }
 
-void freeHtmlElement(HtmlElement **htmlElement) {
+void _freeHtmlElement(HtmlElement **htmlElement) {
   if (*htmlElement == NULL) {
     return;
   }
@@ -58,7 +58,7 @@ void freeHtmlElement(HtmlElement **htmlElement) {
   for (int i = 0; i < (*htmlElement)->_childrenCount; i++) {
     HtmlElement** child = *((*htmlElement)->_children + i);
     
-    freeHtmlElement(child);
+    _freeHtmlElement(child);
   }
 
   if (htmlElement == NULL) {
@@ -126,7 +126,7 @@ HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement) {
   return *htmlElement;
 }
 
-void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned short depth) {
+void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned short depth) {
   FILE* htmlFile = htmlPage->_htmlFile;
 
   // tarpu pridejimas
@@ -148,7 +148,7 @@ void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sho
   for (int i = 0; i < htmlElement->_childrenCount; i++) {
     HtmlElement** child = *(htmlElement->_children + i);
     
-    writeHtmlElement(htmlPage, *child, depth+1);
+    _writeHtmlElement(htmlPage, *child, depth+1);
   }
 
   // tarpu pridejimas
@@ -159,10 +159,10 @@ void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sho
   fprintf(htmlFile, "</%s>\n", htmlElement->_elementType);
 }
 
-void freeHtmlPage(HtmlPage** htmlPage) {
+void _freeHtmlPage(HtmlPage** htmlPage) {
   if (htmlPage != NULL) {
-      freeHtmlElement(&(*htmlPage)->_htmlHead);
-      freeHtmlElement(&(*htmlPage)->_htmlBody);
+      _freeHtmlElement(&(*htmlPage)->_htmlHead);
+      _freeHtmlElement(&(*htmlPage)->_htmlBody);
 
       // pafreeinimas ir pats HtmlPage galiausiai
       free(*htmlPage); 
@@ -182,13 +182,13 @@ void createHtmlPage(HtmlPage** htmlPage) {
   HtmlElement* htmlHead = (*htmlPage)->_htmlHead;
 
   // sukuria i html visa head
-  writeHtmlElement(*htmlPage, htmlHead, 0);
+  _writeHtmlElement(*htmlPage, htmlHead, 0);
   
   HtmlElement *htmlBody = (*htmlPage)->_htmlBody;
   
   // sukuria i html visa body
-  writeHtmlElement(*htmlPage, htmlBody, 0);
+  _writeHtmlElement(*htmlPage, htmlBody, 0);
 
   //TODO: GAL FREE PALIKTI NAUDOTOJUI PACIAM NAUDOTI?
-  freeHtmlPage(htmlPage);
+  _freeHtmlPage(htmlPage);
 }

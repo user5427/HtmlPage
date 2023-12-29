@@ -22,7 +22,7 @@ typedef struct HtmlElement{
 
 HtmlElement* initHtmlElement(char* elementType);
 HtmlElement* addChild(HtmlElement* parent, HtmlElement** child);
-void freeHtmlElement(HtmlElement** htmlElement);
+void _freeHtmlElement(HtmlElement** htmlElement);
 typedef struct {
     FILE *_htmlFile;
     //CSS FILE prideti
@@ -33,7 +33,7 @@ typedef struct {
 } HtmlPage;
 HtmlPage* initHtmlPage(char* fileName);
 HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement);
-void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned short depth); //TODO ar reikia vartotojui sitos funkcijos?
-void freeHtmlPage(HtmlPage** htmlPage);
+void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned short depth); //TODO ar reikia vartotojui sitos funkcijos?
+void _freeHtmlPage(HtmlPage** htmlPage);
 void createHtmlPage(HtmlPage** htmlPage);
 #endif //PROPROPRO_MODULIS_HTML_MODULIS_H
