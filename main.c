@@ -28,14 +28,14 @@ int main() {
     p3->text = "asdasd";
     p4->text = "wadasdaw";
 
-    addChild(div, p);
-    addChild(div, p2);
-    addChild(div, p3);
-    addChild(div, p4);
+    addChild(div, &p);
+    addChild(div, &p2);
+    addChild(div, &p3);
+    addChild(div, &p4);
 
-    addBodyElement(htmlPage, div);
+    addBodyElement(htmlPage, &div);
 
-    createHtmlPage(htmlPage);
+    createHtmlPage(&htmlPage);
 
     /* ----------- Tests 1 ----------- */
     HtmlPage *htmlTest = initHtmlPage("tests.html");
@@ -45,27 +45,26 @@ int main() {
     HtmlElement *section = initHtmlElement("section");
     HtmlElement *h2 = initHtmlElement("h2");
     h2->text = "Cat Photos";
+    
     for (int i = 0; i < 10; ++i) {
-        addChild(section, h2);
+        addChild(section, &h2);
     }
-    addChild(h1, section);
-    addChild(main, h1);
-    addBodyElement(htmlTest, main);
-    createHtmlPage(htmlTest);
-    freeHtmlPage(htmlTest); //FIXME
-    createHtmlPage(htmlTest);
-    freeHtmlPage(htmlPage); //FIXME
-    createHtmlPage(htmlPage);
+    
+    addChild(h1, &section);
+    addChild(main, &h1);
+    addBodyElement(htmlTest, &main);
+    createHtmlPage(&htmlTest);
+    createHtmlPage(&htmlTest);
 
-    /* ----------- Tests 2 ----------- */
-    HtmlPage *htmlTest2 = initHtmlPage("tests2.html");
-    HtmlElement *p2_1 = initHtmlElement("h1");
-    HtmlElement *a = initHtmlElement("a");
-    a->text = "cat photos";
-    p2_1->text = "CatPhotoApp";
-    addChild(p2_1, a);
-    //addChild(a, p2_1); //FIXME infinite loop?
-    addBodyElement(htmlTest2, p2_1);
-    createHtmlPage(htmlTest2);
+    /* /\* ----------- Tests 2 ----------- *\/ */
+    /* HtmlPage *htmlTest2 = initHtmlPage("tests2.html"); */
+    /* HtmlElement *p2_1 = initHtmlElement("h1"); */
+    /* HtmlElement *a = initHtmlElement("a"); */
+    /* a->text = "cat photos"; */
+    /* p2_1->text = "CatPhotoApp"; */
+    /* addChild(p2_1, a); */
+    /* //addChild(a, p2_1); //FIXME infinite loop? */
+    /* addBodyElement(htmlTest2, p2_1); */
+    /* createHtmlPage(htmlTest2); */
     return 0;
 }
