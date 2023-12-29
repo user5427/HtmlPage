@@ -1,5 +1,15 @@
 # HtmlPage
-
+## Turinys
+[Turinys](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#turinys)  
+[Aprašymas](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija/README.md#apra%C5%A1ymas)  
+[Dokumentacija](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija#dokumentacija)
+- [HtmlPage](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlpage-1)
+  - [initHtmlPage()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlpage-inithtmlpagechar-filename)
+  - [addBodyElement()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlelement-addbodyelementhtmlpage-htmlpage-htmlelement-htmlelement)
+  - [createHtmlPage()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#void-createhtmlpagehtmlpage-htmlpage)
+- [HtmlElement](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlelement)
+  - [initHtmlElement()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlelement-inithtmlelementchar-elementtype)
+  - [addChild()](https://github.com/user5427/ProProPro-modulis/tree/readme-dokumentacija?tab=readme-ov-file#htmlelement-addchildhtmlelement-parent-htmlelement-child) 
 ## Aprašymas
 **HtmlPage** modulis generuoja html failus, pagal sukurtus elementus. 
 Modulio naudojimo pavyzdys: 
@@ -56,43 +66,76 @@ Gautas sugeneruotas html failas atrodo taip:
 # Dokumentacija
 
 ## HtmlPage
+Struktūra kuri aprašo visą html puslapį.
 
-### ` HtmlPage* initHtmlPage(char* fileName); `
-Sukuria `HtmlPage` struktūrą. 
-#### Argumentai
-`fileName` - kuriamo html failo pavadinimas. 
-#### Gražina
-Adresą į sukurtą `HtmlPage` arba `NULL` jeigu nepavyko sukurti.
+## `HtmlPage* initHtmlPage(char* fileName)`
+Sukuria `HtmlPage` struktūrą
+### Argumentai
+`fileName` - kuriamo html failo pavadinimas
+### Gražina
+Adresą į sukurtą `HtmlPage` arba `NULL` jeigu nepavyko sukurti
 
-### `HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement);`
-Prideda `htmlElement` prie html `<body>` elementų.
-
-#### Argumentai
+## `HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement)`
+Prideda `htmlElement` prie html `<body>` elementų
+### Argumentai
 `htmlPage` - prie šios struktūros bus pridėtas `htmlElement` \
-`htmlElement` - pridedamas elementas. 
-#### Gražina
-Adresą į pridėtą `HtmlElement` arba NULL jeigu nepavyko pridėti.
+`htmlElement` - pridedamas elementas
+### Gražina
+Adresą į pridėtą `HtmlElement` arba `NULL` jeigu nepavyko pridėti
+
+## `void createHtmlPage(HtmlPage** htmlPage)`
+Sugeneruoja html puslapį, pagal nurodytą sukurtą struktūrą \
+**SVARBU: po funkcijos iškvietimo `htmlPage` elementas nebegali būti naudojamas!** 
+```c
+createHtmlPage(htmlPage);
+addChild(htmlPage, htmlElement); //htmlPage -> sicia lygus NULL
+```
+### Argumentai
+`htmlPage` - adresas į pointerį, kuriame norimas sukurti puslapis
+
 ## HtmlElement
+Struktūra kuri aprašo visus html elementus.
+```c
+typedef struct HtmlElement{
+  char* text;
+} HtmlElement;
+```
+`char* text` - kintamasis, kuriame gali būti parašytas tekstas kuris būtų html tage.
+```c
+HtmlElement* p = initHtmlElement("p");
+p->text = "Hello World!";
+```
+Gautas html kodas bus:
+```html
+<p>Hello World!
+</p>
+```
 
-Darbui su **html elementu**:
-- HtmlElement* initHtmlElement(char* elementType);
-- HtmlElement* addChild(HtmlElement* parent, HtmlElement* child);
-- void freeHtmlElement(HtmlElement* htmlElement);
+## `HtmlElement* initHtmlElement(char* elementType)`
+Sukuria `HtmlElement` struktūrą
+### Argumentai
+`elementType` - [html tago](https://www.w3schools.com/tags/default.asp) pavadinimas 
+### Gražina
+Adresą į sukurtą `HtmlElement` arba `NULL` jeigu nepavyko sukurti
 
-Darbui su **html puslapiu**:
-- HtmlPage* initHtmlPage(char* fileName);
-- HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement* htmlElement);
-- void writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned short depth);
-- void freeHtmlPage(HtmlPage* htmlPage);
-- void createHtmlPage(HtmlPage* htmlPage);
+## `HtmlElement* addChild(HtmlElement* parent, HtmlElement** child)`
+Prideda duotajam `parent` elementui, `child` elementą
+```c
+HtmlElement* div = initHtmlElement("div");
+HtmlElement* p = initHtmlElement("p");
+p->text = "Hello World!";
+addChild(div, p);
+```
+Gautas html kodas bus:
+```html
+<div>
+  <p>Hello World!
+  </p>
+</div>
+```
+### Argumentai
+`parent` - adresas į `HtmlElement`, į kurį bus pridėtas `child` \
+`child` - adresas į pointerį `HtmlElement`, kurį pridėti
+### Gražina
+Adresą i pridėtą `HtmlElement` arba `NULL` jeigu nepavyko pridėti
 
-### Funkcijų paaiškinimai
-- initHtmlElement() - sukuria html elementą.
-- addChild() - prie nurodyto html elemento prideda gilesnį html elementą.
-- freeHtmlElement() - atlaisvina html elementą su visais gilesniais html elementais.
-
-- initHtmlPage() - sukuria html puslapį.
-- addBodyElement() - prie html body prideda html elementą su visais gilesniais elementais.
-- writeHtmlElement() - išsaugoja html elementą su visais gilesniais html elementais į failą. Naudojama **rekursija**.
-- freeHtmlPage() - atlaisvina html puslapio atmintį su visais html elementais.
-- createHtmlPage() - sukuria html puslapį, išsaugoja jame head ir body.
