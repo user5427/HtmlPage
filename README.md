@@ -1,5 +1,8 @@
 # HtmlPage
-
+## Turinys
+[Turinys](https://github.com/user5427/ProProPro-modulis/edit/readme-dokumentacija/README.md#turinys)  
+[Aprašymas](https://github.com/user5427/ProProPro-modulis/edit/readme-dokumentacija/README.md#apra%C5%A1ymas)  
+[Dokumentacija]()
 ## Aprašymas
 **HtmlPage** modulis generuoja html failus, pagal sukurtus elementus. 
 Modulio naudojimo pavyzdys: 
