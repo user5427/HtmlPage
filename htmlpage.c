@@ -1,6 +1,7 @@
 #include "html_modulis.h"
 
 //--------- HtmlElement FUNCTIONS ----------------------
+
 //FUNKCIJA GRAZINA ADRESA JEIGU VISKAS SEKMINGAI PAVYKO, KITU ATVEJU GRAZINA NULL
 HtmlElement* initHtmlElement(char* elementType) {
   HtmlElement* htmlElement = malloc(sizeof(HtmlElement));
@@ -8,11 +9,13 @@ HtmlElement* initHtmlElement(char* elementType) {
   if (htmlElement == NULL || elementType == NULL) {
     return NULL;
   }
+  
   // Initialize all variables with default values
   htmlElement->_elementType = elementType;
   htmlElement->text = NULL;
   htmlElement->_childrenCount = 0;
   htmlElement->_childrenSize = 2;
+  
   // Initialize the pointer array to other HtmlElements
   htmlElement->_children =
       malloc(sizeof(HtmlElement**) * htmlElement->_childrenSize);
@@ -25,7 +28,7 @@ HtmlElement* initHtmlElement(char* elementType) {
 }
 
 HtmlElement* addChild(HtmlElement* parent, HtmlElement** child) {
-  if (parent == NULL || child == NULL) {
+  if (parent == NULL || *child == NULL) {
     return NULL;
   }
   
@@ -51,6 +54,7 @@ HtmlElement* addChild(HtmlElement* parent, HtmlElement** child) {
 }
 
 void _freeHtmlElement(HtmlElement **htmlElement) {
+  // sitas if tiesiog, kad jeigu NULL net nebelistu i for loopa
   if (*htmlElement == NULL) {
     return;
   }
@@ -61,7 +65,9 @@ void _freeHtmlElement(HtmlElement **htmlElement) {
     _freeHtmlElement(child);
   }
 
-  if (htmlElement == NULL) {
+  // sitas antras if irgi reikalingas in case parent elementas buvo
+  // toks pat kaip ir jo kazkoks child
+  if (*htmlElement == NULL) {
     return;
   }
   
@@ -72,8 +78,6 @@ void _freeHtmlElement(HtmlElement **htmlElement) {
 //--------- HtmlElement FUNCTIONS ----------------------
 
 //--------- HtmlPage FUNCTIONS ----------------------
-
-
 
 
 //FUNKCIJA GRAZINA ADRESA JEIGU VISKAS SEKMINGAI PAVYKO, KITU ATVEJU GRAZINA NULL
@@ -114,7 +118,7 @@ HtmlPage* initHtmlPage(char* fileName) {
 }
 
 HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement) {
-  if (htmlPage == NULL || htmlElement == NULL) {
+  if (htmlPage == NULL || *htmlElement == NULL) {
     return NULL;
   }
   
@@ -189,6 +193,5 @@ void createHtmlPage(HtmlPage** htmlPage) {
   // sukuria i html visa body
   _writeHtmlElement(*htmlPage, htmlBody, 0);
 
-  //TODO: GAL FREE PALIKTI NAUDOTOJUI PACIAM NAUDOTI?
   _freeHtmlPage(htmlPage);
 }
