@@ -5,5 +5,5 @@ set(CMAKE_C_STANDARD 11)
 
 add_executable(ProProPro_modulis
         htmlpage.c
-        html_modulis.h
+        htmlpage.h
         main.c)
