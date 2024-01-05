@@ -33,6 +33,11 @@ int main() {
     addChild(div, &p3);
     addChild(div, &p4);
 
+    HtmlElement *title = initHtmlElement("title");
+    title->text = "Testuojamas puslapis";
+
+    addHeadElement(htmlPage, &title);    
+
     addBodyElement(htmlPage, &div);
 
     createHtmlPage(&htmlPage);

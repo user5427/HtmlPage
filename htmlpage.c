@@ -130,6 +130,18 @@ HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement) {
   return *htmlElement;
 }
 
+HtmlElement *addHeadElement(HtmlPage *htmlPage, HtmlElement **htmlElement) {
+  if (htmlPage == NULL || *htmlElement == NULL) {
+    return NULL;
+  }
+
+  if (addChild(htmlPage->_htmlHead, htmlElement) == NULL) {
+    return NULL;
+  }
+
+  return *htmlElement;
+}
+
 void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned short depth) {
   FILE* htmlFile = htmlPage->_htmlFile;
 
