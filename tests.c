@@ -8,11 +8,13 @@ int main() {
 
     HtmlElement *div = initHtmlElement("div");
 
+    div->id = "div_svarbus_blokas";
+    div->class = "div_elementai";
+
     HtmlElement *p = initHtmlElement("p");
     HtmlElement *p2 = initHtmlElement("p");
     HtmlElement *p3 = initHtmlElement("p");
     HtmlElement *p4 = initHtmlElement("p");
-
 
     if (htmlPage == NULL) {
         printf("HTML PAGE NULLIS\n");

@@ -12,7 +12,11 @@ HtmlElement* initHtmlElement(char* htmlTag) {
   
   // Initialize all variables with default values
   htmlElement->_htmlTag = htmlTag;
+  
   htmlElement->text = NULL;
+  htmlElement->id = NULL;
+  htmlElement->class = NULL;
+  
   htmlElement->_childrenCount = 0;
   htmlElement->_childrenSize = 2;
   
@@ -153,7 +157,18 @@ void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sh
   }
 
   // elemento html tago atspausdinimas
-  fprintf(htmlFile, "<%s>", htmlElement->_htmlTag);
+  fprintf(htmlFile, "<%s", htmlElement->_htmlTag);
+
+  // papildomi attributes, kurie eina i tago vidu (id, class)
+  if (htmlElement->id != NULL) {
+    fprintf(htmlFile, " id=\"%s\"", htmlElement->id);
+  }
+
+  if (htmlElement->id != NULL) {
+    fprintf(htmlFile, " class=\"%s\"", htmlElement->class);
+  }
+
+  fprintf(htmlFile, ">");
 
   //CIA DALYKAI AKTUALUS TIK <HEAD> ELEMENTUI
   if (htmlPage->_htmlHead == htmlElement) {
@@ -169,18 +184,21 @@ void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sh
     fprintf(htmlFile, "%s", htmlElement->text);
   }
 
-  fprintf(htmlFile, "\n");
+  // cia jeigu html elmentas turi children, spausdinti kitokiu formatu ir dar jo vaikus
+  if (htmlElement->_childrenCount != 0) {
+      fprintf(htmlFile, "\n");
   
-  // elemento 'children' atspausdinimas
-  for (int i = 0; i < htmlElement->_childrenCount; i++) {
-    HtmlElement** child = *(htmlElement->_children + i);
+      // elemento 'children' atspausdinimas
+      for (int i = 0; i < htmlElement->_childrenCount; i++) {
+	HtmlElement** child = *(htmlElement->_children + i);
     
-    _writeHtmlElement(htmlPage, *child, depth+1);
-  }
+	_writeHtmlElement(htmlPage, *child, depth+1);
+      }
 
-  // tarpu pridejimas
-  for (int i = 0; i < depth; i++) {
-    fprintf(htmlFile, "  ");
+      // tarpu pridejimas
+      for (int i = 0; i < depth; i++) {
+	fprintf(htmlFile, "  ");
+      }
   }
 
   // elemento html tag uzdarymas
