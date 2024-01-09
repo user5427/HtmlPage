@@ -67,6 +67,12 @@ Gautas sugeneruotas html failas atrodo taip:
 
 ## HtmlPage
 Struktūra kuri aprašo visą html puslapį.
+```c
+typedef struct HtmlPage{
+  char* cssFileName;
+} HtmlPage;
+```
+`cssFileName` - css failo pavadinimas, jeigu nėra tada `NULL`
 
 ## `HtmlPage* initHtmlPage(char* fileName)`
 Sukuria `HtmlPage` struktūrą
