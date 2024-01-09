@@ -11,9 +11,11 @@
 typedef struct HtmlElement{
   //PUBLIC KINTAMIEJI:
   char* text;
+  char* id;
+  char* class;
 
   //PRIVATE KINTAMIEJI: (NETUREU BUTI NAUDOJAMI)
-  char* _elementType; //Html tago pavadinimas
+  char* _htmlTag; //Html tago pavadinimas
 
   struct HtmlElement*** _children; // An array of double pointers to Html element
   unsigned int _childrenCount; // Pointer array capacity
@@ -23,7 +25,7 @@ typedef struct HtmlElement{
 
 } HtmlElement;
 
-HtmlElement* initHtmlElement(char* elementType);
+HtmlElement* initHtmlElement(char* htmlTag);
 HtmlElement* addChild(HtmlElement* parent, HtmlElement** child);
 void _freeHtmlElement(HtmlElement** htmlElement);
 

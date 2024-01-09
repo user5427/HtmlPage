@@ -3,15 +3,15 @@
 //--------- HtmlElement FUNCTIONS ----------------------
 
 //FUNKCIJA GRAZINA ADRESA JEIGU VISKAS SEKMINGAI PAVYKO, KITU ATVEJU GRAZINA NULL
-HtmlElement* initHtmlElement(char* elementType) {
+HtmlElement* initHtmlElement(char* htmlTag) {
   HtmlElement* htmlElement = malloc(sizeof(HtmlElement));
   
-  if (htmlElement == NULL || elementType == NULL) {
+  if (htmlElement == NULL || htmlTag == NULL) {
     return NULL;
   }
   
   // Initialize all variables with default values
-  htmlElement->_elementType = elementType;
+  htmlElement->_htmlTag = htmlTag;
   htmlElement->text = NULL;
   htmlElement->_childrenCount = 0;
   htmlElement->_childrenSize = 2;
@@ -153,7 +153,7 @@ void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sh
   }
 
   // elemento html tago atspausdinimas
-  fprintf(htmlFile, "<%s>", htmlElement->_elementType);
+  fprintf(htmlFile, "<%s>", htmlElement->_htmlTag);
 
   //CIA DALYKAI AKTUALUS TIK <HEAD> ELEMENTUI
   if (htmlPage->_htmlHead == htmlElement) {
@@ -182,8 +182,9 @@ void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sh
   for (int i = 0; i < depth; i++) {
     fprintf(htmlFile, "  ");
   }
-  
-  fprintf(htmlFile, "</%s>\n", htmlElement->_elementType);
+
+  // elemento html tag uzdarymas
+  fprintf(htmlFile, "</%s>\n", htmlElement->_htmlTag);
 }
 
 void _freeHtmlPage(HtmlPage** htmlPage) {
