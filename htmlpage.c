@@ -114,6 +114,8 @@ HtmlPage* initHtmlPage(char* fileName) {
 
   htmlPage->_htmlBody = htmlBody;
 
+  htmlPage->cssFileName = NULL;
+
   return htmlPage;
 }
 
@@ -130,7 +132,7 @@ HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement) {
   return *htmlElement;
 }
 
-HtmlElement *addHeadElement(HtmlPage *htmlPage, HtmlElement **htmlElement) {
+HtmlElement* addHeadElement(HtmlPage* htmlPage, HtmlElement** htmlElement) {
   if (htmlPage == NULL || *htmlElement == NULL) {
     return NULL;
   }
@@ -144,14 +146,23 @@ HtmlElement *addHeadElement(HtmlPage *htmlPage, HtmlElement **htmlElement) {
 
 void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned short depth) {
   FILE* htmlFile = htmlPage->_htmlFile;
-
+  
   // tarpu pridejimas
   for (int i = 0; i < depth; i++) {
     fprintf(htmlFile, "  ");
   }
 
-  // elemento atspausdinimas
+  // elemento html tago atspausdinimas
   fprintf(htmlFile, "<%s>", htmlElement->_elementType);
+
+  //CIA DALYKAI AKTUALUS TIK <HEAD> ELEMENTUI
+  if (htmlPage->_htmlHead == htmlElement) {
+    
+    if (htmlPage->cssFileName != NULL) {
+      fprintf(htmlFile, "\n  <link rel=\"stylesheet\" href=\"%s\">", htmlPage->cssFileName);
+    }
+    
+  }  
 
   // teksto, jei jis yra atspausdinimas
   if (htmlElement->text != NULL) {

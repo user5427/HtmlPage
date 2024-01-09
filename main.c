@@ -4,6 +4,7 @@
 int main() {
     // example
     HtmlPage *htmlPage = initHtmlPage("failas.html");
+    htmlPage->cssFileName = "style.css";
 
     HtmlElement *div = initHtmlElement("div");
 
