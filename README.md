@@ -104,9 +104,13 @@ Struktūra kuri aprašo visus html elementus.
 ```c
 typedef struct HtmlElement{
   char* text;
+  char* id;
+  char* class;
 } HtmlElement;
 ```
 `char* text` - kintamasis, kuriame gali būti parašytas tekstas kuris būtų html tage.
+`char* id` - html elemento id
+`char* class` - html elemento class
 ```c
 HtmlElement* p = initHtmlElement("p");
 p->text = "Hello World!";
@@ -117,10 +121,10 @@ Gautas html kodas bus:
 </p>
 ```
 
-## `HtmlElement* initHtmlElement(char* elementType)`
+## `HtmlElement* initHtmlElement(char* htmlTag)`
 Sukuria `HtmlElement` struktūrą
 ### Argumentai
-`elementType` - [html tago](https://www.w3schools.com/tags/default.asp) pavadinimas 
+`htmlTag` - [html tago](https://www.w3schools.com/tags/default.asp) pavadinimas 
 ### Gražina
 Adresą į sukurtą `HtmlElement` arba `NULL` jeigu nepavyko sukurti
 
