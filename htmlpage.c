@@ -11,7 +11,7 @@ HtmlElement* initHtmlElement(char* elementType) {
   }
   
   // Initialize all variables with default values
-  htmlElement->_elementType = elementType;
+  htmlElement->_htmlTag = elementType;
   htmlElement->text = NULL;
   htmlElement->_childrenCount = 0;
   htmlElement->_childrenSize = 2;
@@ -153,7 +153,7 @@ void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sh
   }
 
   // elemento html tago atspausdinimas
-  fprintf(htmlFile, "<%s>", htmlElement->_elementType);
+  fprintf(htmlFile, "<%s>", htmlElement->_htmlTag);
 
   //CIA DALYKAI AKTUALUS TIK <HEAD> ELEMENTUI
   if (htmlPage->_htmlHead == htmlElement) {
@@ -183,7 +183,7 @@ void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sh
     fprintf(htmlFile, "  ");
   }
   
-  fprintf(htmlFile, "</%s>\n", htmlElement->_elementType);
+  fprintf(htmlFile, "</%s>\n", htmlElement->_htmlTag);
 }
 
 void _freeHtmlPage(HtmlPage** htmlPage) {
