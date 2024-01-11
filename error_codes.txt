@@ -1,0 +1,6 @@
+All the error codes from error_number
+ 0 > no errors
+ 1 > malloc failed
+ 2 > input value set to NULL
+ 3 > realloc failed
+ 4 > fopen failed
