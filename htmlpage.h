@@ -15,6 +15,10 @@ typedef struct HtmlElement{
   char* class;
 
   //PRIVATE KINTAMIEJI: (NETUREU BUTI NAUDOJAMI)
+  char* _style;
+  unsigned int _styleSize;
+  unsigned int _styleCount;
+
   char* _htmlTag; //Html tago pavadinimas
 
   struct HtmlElement*** _children; // An array of double pointers to Html element
