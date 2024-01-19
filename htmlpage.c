@@ -110,16 +110,20 @@ HtmlElement* addStyle(HtmlElement* htmlElement, char* property, char* value) {
   }
 
   // alokavus pakankamai atminties galima irasyti style informacija
+
+  // style formatas -> "property:value;"
   
   strcat(htmlElement->_style, property);
   htmlElement->_styleCount += lenproperty;
 
   *(htmlElement->_style + htmlElement->_styleCount) = ':';
+  htmlElement->_styleCount += 1;
 
   strcat(htmlElement->_style, value);
   htmlElement->_styleCount += lenvalue;
 
   *(htmlElement->_style + htmlElement->_styleCount) = ';';
+  htmlElement->_styleCount += 1;
 
   return htmlElement;
 }
@@ -128,6 +132,10 @@ void _freeHtmlElement(HtmlElement **htmlElement) {
   // sitas if tiesiog, kad jeigu NULL net nebelistu i for loopa
   if (*htmlElement == NULL) {
     return;
+  }
+
+  if ((*htmlElement)->_style != NULL) {
+    free((*htmlElement)->_style);
   }
   
   for (int i = 0; i < (*htmlElement)->_childrenCount; i++) {
@@ -233,6 +241,10 @@ void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sh
 
   if (htmlElement->id != NULL) {
     fprintf(htmlFile, " class=\"%s\"", htmlElement->class);
+  }
+
+  if (htmlElement->_style != NULL) {
+    fprintf(htmlFile, " style=\"%s\"", htmlElement->_style);
   }
 
   fprintf(htmlFile, ">");

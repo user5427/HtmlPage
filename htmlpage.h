@@ -14,7 +14,7 @@ typedef struct HtmlElement{
   char* id;
   char* class;
 
-  //PRIVATE KINTAMIEJI: (NETUREU BUTI NAUDOJAMI)
+  //PRIVATE KINTAMIEJI: (NETURETU BUTI NAUDOJAMI)
   char* _style;
   unsigned int _styleSize;
   unsigned int _styleCount;
@@ -31,6 +31,7 @@ typedef struct HtmlElement{
 
 HtmlElement* initHtmlElement(char* htmlTag);
 HtmlElement* addChild(HtmlElement* parent, HtmlElement** child);
+HtmlElement* addStyle(HtmlElement* htmlElement, char* property, char* value);
 void _freeHtmlElement(HtmlElement** htmlElement);
 
 typedef struct {
