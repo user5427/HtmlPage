@@ -16,6 +16,10 @@ HtmlElement* initHtmlElement(char* htmlTag) {
   htmlElement->text = NULL;
   htmlElement->id = NULL;
   htmlElement->class = NULL;
+
+  htmlElement->_style = NULL;
+  htmlElement->_styleSize = 0;
+  htmlElement->_styleCount = 0;
   
   htmlElement->_childrenCount = 0;
   htmlElement->_childrenSize = 2;
@@ -57,10 +61,81 @@ HtmlElement* addChild(HtmlElement* parent, HtmlElement** child) {
   return *child;
 }
 
+// FUNKCIJA GRAZINA POINTERI I HTMLELEMENT, JEI NEPAVYKO -> NULL
+HtmlElement* addStyle(HtmlElement* htmlElement, char* property, char* value) {
+  if (htmlElement == NULL || property == NULL || value == NULL) {
+    return NULL;
+  }
+  
+  // patikrina ar jau buvo prideta style kokiu elementu, jei ne sukuria vietos atminty
+  if (htmlElement->_styleSize == 0) {
+    htmlElement->_styleSize = 20;
+    htmlElement->_styleCount = 0;
+
+    //calloc funkcija, nes reikia kad viska uzpildytu '\0'
+    htmlElement->_style = calloc(htmlElement->_styleSize, sizeof(char));
+
+    if (htmlElement->_style == NULL) {
+      return NULL;
+    }
+  }
+
+  unsigned long lenproperty = strlen(property);
+  unsigned long lenvalue = strlen(value);
+
+  // cia laisva vieta, kuria dar galima naudoti; -1 nes turi buti palikta vieta '\0'
+  unsigned int freeSpace = htmlElement->_styleSize - htmlElement->_styleCount - 1;
+  
+  // style formatas -> "property:value;"
+
+  // tikrina ar dydis pakankamas +2 yra ':', ';' zenklai
+  while (lenproperty + lenvalue + 2 >= freeSpace) {
+    htmlElement->_styleSize *= 2;
+
+    htmlElement->_style = realloc(htmlElement->_style, htmlElement->_styleSize);
+    
+    if (htmlElement->_style == NULL) {
+      return NULL;
+    }
+
+    // reallocas neuzpildo atminties automatiskai nuliais, del to ta reikia padaryti
+    int initializeSize = htmlElement->_styleSize / 2;
+
+    // uzpildymas nuliais
+    for (int i = initializeSize; i < htmlElement->_styleSize; ++i) {
+      *(htmlElement->_style + i) = 0;
+    }
+
+    freeSpace = htmlElement->_styleSize - htmlElement->_styleCount - 1;
+  }
+
+  // alokavus pakankamai atminties galima irasyti style informacija
+
+  // style formatas -> "property:value;"
+  
+  strcat(htmlElement->_style, property);
+  htmlElement->_styleCount += lenproperty;
+
+  *(htmlElement->_style + htmlElement->_styleCount) = ':';
+  htmlElement->_styleCount += 1;
+
+  strcat(htmlElement->_style, value);
+  htmlElement->_styleCount += lenvalue;
+
+  *(htmlElement->_style + htmlElement->_styleCount) = ';';
+  htmlElement->_styleCount += 1;
+
+  return htmlElement;
+}
+
 void _freeHtmlElement(HtmlElement **htmlElement) {
   // sitas if tiesiog, kad jeigu NULL net nebelistu i for loopa
   if (*htmlElement == NULL) {
     return;
+  }
+
+  if ((*htmlElement)->_style != NULL) {
+    free((*htmlElement)->_style);
   }
   
   for (int i = 0; i < (*htmlElement)->_childrenCount; i++) {
@@ -166,6 +241,10 @@ void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sh
 
   if (htmlElement->id != NULL) {
     fprintf(htmlFile, " class=\"%s\"", htmlElement->class);
+  }
+
+  if (htmlElement->_style != NULL) {
+    fprintf(htmlFile, " style=\"%s\"", htmlElement->_style);
   }
 
   fprintf(htmlFile, ">");
