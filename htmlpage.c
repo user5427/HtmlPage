@@ -1,4 +1,10 @@
 #include "htmlpage.h"
+int error_number = 0;
+#define MALLOC_FAILED 1
+#define INPUT_NULL 2
+#define REALLOC_FAILED 3
+#define FOPEN_FAILED 4
+#define HTML_PAGE_NULL 5
 
 //--------- HtmlElement FUNCTIONS ----------------------
 
@@ -6,8 +12,13 @@
 HtmlElement* initHtmlElement(char* htmlTag) {
   HtmlElement* htmlElement = malloc(sizeof(HtmlElement));
   
-  if (htmlElement == NULL || htmlTag == NULL) {
-    return NULL;
+  if (htmlElement == NULL) {
+      error_number = MALLOC_FAILED;
+      return NULL;
+  }
+  if (htmlTag == NULL){
+      error_number = INPUT_NULL;
+      return NULL;
   }
   
   // Initialize all variables with default values
@@ -25,7 +36,8 @@ HtmlElement* initHtmlElement(char* htmlTag) {
       malloc(sizeof(HtmlElement**) * htmlElement->_childrenSize);
   
   if (htmlElement->_children == NULL) {
-    return NULL;
+      error_number = MALLOC_FAILED;
+      return NULL;
   }
   
   return htmlElement;
@@ -33,6 +45,7 @@ HtmlElement* initHtmlElement(char* htmlTag) {
 
 HtmlElement* addChild(HtmlElement* parent, HtmlElement** child) {
   if (parent == NULL || *child == NULL) {
+      error_number = INPUT_NULL;
     return NULL;
   }
   
@@ -43,7 +56,7 @@ HtmlElement* addChild(HtmlElement* parent, HtmlElement** child) {
 
     //JEIGU IVYKO KLAIDA
     if (parent->_children == NULL) {
-
+        error_number = REALLOC_FAILED;
       //NEPAVYKO REALOKUOTI NAUJOS VIETOS, DYDIS PALIEKAMAS KOKS BUVO
       parent->_childrenSize /= 2;
       return NULL;
@@ -89,6 +102,7 @@ HtmlPage* initHtmlPage(char* fileName) {
   HtmlPage* htmlPage = malloc(sizeof(HtmlPage));
 
   if (htmlPage == NULL) {
+      error_number = MALLOC_FAILED;
     return NULL;
   }
   
@@ -97,6 +111,7 @@ HtmlPage* initHtmlPage(char* fileName) {
   htmlFile = fopen(fileName, "w");
 
   if(htmlFile == NULL){
+      error_number = FOPEN_FAILED;
     return NULL;
   }
 
@@ -105,6 +120,7 @@ HtmlPage* initHtmlPage(char* fileName) {
   //SUKURIA <HEAD> HTML ELEMENTA
   HtmlElement* htmlHead = initHtmlElement("head");
   if (htmlHead == NULL) {
+      error_number = error_number;
     return NULL;
   }
   
@@ -113,6 +129,7 @@ HtmlPage* initHtmlPage(char* fileName) {
   //SUKURIA <BODY> HTML ELEMENTA
   HtmlElement* htmlBody = initHtmlElement("body");
   if (htmlBody == NULL) {
+      error_number = error_number;
     return NULL;
   }
 
@@ -130,6 +147,7 @@ HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement) {
   
   // Prideda nauja elementa i body
   if (addChild(htmlPage->_htmlBody, htmlElement) == NULL) {
+      error_number = error_number;
     return NULL;
   }
 
@@ -138,10 +156,12 @@ HtmlElement* addBodyElement(HtmlPage* htmlPage, HtmlElement** htmlElement) {
 
 HtmlElement* addHeadElement(HtmlPage* htmlPage, HtmlElement** htmlElement) {
   if (htmlPage == NULL || *htmlElement == NULL) {
+      error_number = INPUT_NULL;
     return NULL;
   }
 
   if (addChild(htmlPage->_htmlHead, htmlElement) == NULL) {
+      error_number = error_number;
     return NULL;
   }
 
@@ -206,18 +226,22 @@ void _writeHtmlElement(HtmlPage* htmlPage, HtmlElement* htmlElement, unsigned sh
 }
 
 void _freeHtmlPage(HtmlPage** htmlPage) {
-  if (htmlPage != NULL) {
+  if (htmlPage == NULL) {
+      error_number = INPUT_NULL;
+      return;
+  }
       _freeHtmlElement(&(*htmlPage)->_htmlHead);
       _freeHtmlElement(&(*htmlPage)->_htmlBody);
 
       // pafreeinimas ir pats HtmlPage galiausiai
-      free(*htmlPage); 
+      free(*htmlPage);
       *htmlPage = NULL;
-  }
+
 }
 
 void createHtmlPage(HtmlPage** htmlPage) {
   if (*htmlPage == NULL) {
+      error_number = HTML_PAGE_NULL;
     return;
   }
   

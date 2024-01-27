@@ -8,6 +8,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+extern int error_number;
+
 typedef struct HtmlElement{
   //PUBLIC KINTAMIEJI:
   char* text;
