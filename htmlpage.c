@@ -4,6 +4,7 @@ int error_number = 0;
 #define INPUT_NULL 2
 #define REALLOC_FAILED 3
 #define FOPEN_FAILED 4
+#define HTML_PAGE_NULL 5
 
 //--------- HtmlElement FUNCTIONS ----------------------
 
@@ -240,6 +241,7 @@ void _freeHtmlPage(HtmlPage** htmlPage) {
 
 void createHtmlPage(HtmlPage** htmlPage) {
   if (*htmlPage == NULL) {
+      error_number = HTML_PAGE_NULL;
     return;
   }
   
